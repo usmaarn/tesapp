@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/Dashboard"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineUser } from "react-icons/ai";
 import { CgArrowLongLeft } from "react-icons/cg";
 import { Link, useParams } from "react-router-dom";
@@ -9,6 +9,15 @@ const User = () => {
     const [user, setUser] = useState({});
 
     const params = useParams();
+
+    useEffect(() => {
+        fetch('https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users')
+            .then(res => res.json())
+            .then(json => {
+                let user = json.find((usr: any) => usr.userName == params.user)
+                setUser(user);
+            })
+    }, [])
     
 
     return (
@@ -29,12 +38,12 @@ const User = () => {
                 <div className="shadow bg-white px-5 pt-10 space-y-10">
 
                     <div className="flex items-center">
-                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                            <AiOutlineUser className="text-4xl text-primary" />
+                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <img src={user?.profile?.avatar} alt="" className="object-contain" />
                         </div>
                         <div className="p-5">
-                            <h4 className="text-xl font-medium text-primary">Grace Effiom</h4>
-                            <p className="text-sm">LSQFf587g90</p>
+                            <h4 className="text-xl font-medium text-primary">{user?.profile?.firstName} {user?.profile?.lastName}</h4>
+                            <p className="text-sm">{user.accountNumber}</p>
                         </div>
                         <div className="p-5 border-x">
                             <h6>User’s Tier</h6>
@@ -45,7 +54,7 @@ const User = () => {
                             </p>
                         </div>
                         <div className="p-5">
-                            <h4 className="text-xl font-medium text-primary">₦200,000.00</h4>
+                            <h4 className="text-xl font-medium text-primary">₦{user.accountBalance}</h4>
                             <p className="text-sm">9912345678/Providus Bank</p>
                         </div>
                     </div>
@@ -66,23 +75,23 @@ const User = () => {
                         <div className="grid grid-cols-5 gap-5 flex-nowrap py-5 border-b">
                             <div className="">
                                 <p className="uppercase text-xs">Full name</p>
-                                <p className="font-medium">Grace Effiom</p>
+                                <p className="font-medium">{user?.profile?.firstName} {user?.profile?.lastName}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">phone number</p>
-                                <p className="font-medium">07060780922</p>
+                                <p className="font-medium">{user?.profile?.phoneNumber}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">email address</p>
-                                <p className="font-medium">grace@gmail.com</p>
+                                <p className="font-medium">{user.email}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">bvn</p>
-                                <p className="font-medium">07060780922</p>
+                                <p className="font-medium">{user?.profile?.bvn}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">gender</p>
-                                <p className="font-medium">Female</p>
+                                <p className="font-medium">{user?.profile?.gender}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">marital status</p>
@@ -94,7 +103,7 @@ const User = () => {
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">type of residence</p>
-                                <p className="font-medium">Parent’s Apartment</p>
+                                <p className="font-medium">{user?.profile?.address}</p>
                             </div>
                         </div>
                     </div>
@@ -104,31 +113,31 @@ const User = () => {
                         <div className="grid grid-cols-5 gap-5 flex-nowrap py-5 border-b">
                             <div className="">
                                 <p className="uppercase text-xs">level of education</p>
-                                <p className="font-medium">B.Sc</p>
+                                <p className="font-medium">{user?.education?.level}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">Employment Status</p>
-                                <p className="font-medium">Employed</p>
+                                <p className="font-medium">{user?.education?.employmentStatus}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">Sector of Employment</p>
-                                <p className="font-medium">FinTech</p>
+                                <p className="font-medium">{user?.education?.sector}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">Duration of Employment</p>
-                                <p className="font-medium">2 Years</p>
+                                <p className="font-medium">{user?.education?.duration}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">office email</p>
-                                <p className="font-medium">grace@lendsqr.com</p>
+                                <p className="font-medium">{user?.education?.officeEmail}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">monthly income</p>
-                                <p className="font-medium">₦200,000.00- ₦400,000.00</p>
+                                <p className="font-medium">₦{user?.education?.monthlyIncome[0]} - ₦{user?.education?.monthlyIncome[1]}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">loan repayment</p>
-                                <p className="font-medium">₦40,000</p>
+                                <p className="font-medium">₦{user?.education?.loanRepayment}</p>
                             </div>
                         </div>
                     </div>
@@ -138,15 +147,15 @@ const User = () => {
                         <div className="grid grid-cols-5 gap-5 flex-nowrap py-5 border-b">
                             <div className="">
                                 <p className="uppercase text-xs">twitter</p>
-                                <p className="font-medium">@grace_effiom</p>
+                                <p className="font-medium">{user?.socials?.twitter}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">facebook</p>
-                                <p className="font-medium">Grace Effiom</p>
+                                <p className="font-medium">{user?.socials?.facebook}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">instagram</p>
-                                <p className="font-medium">@grace_effiom</p>
+                                <p className="font-medium">{user?.socials?.instagram}</p>
                             </div>
                         </div>
                     </div>
@@ -156,19 +165,19 @@ const User = () => {
                         <div className="grid grid-cols-5 gap-5 flex-nowrap py-5 border-b">
                             <div className="">
                                 <p className="uppercase text-xs">full name</p>
-                                <p className="font-medium">Debby Ogana</p>
+                                <p className="font-medium">{user?.guarantor?.firstName} {user?.guarantor?.lastName}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">phone number</p>
-                                <p className="font-medium">07060780922</p>
+                                <p className="font-medium">{user?.guarantor?.phoneNumber}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">email address</p>
-                                <p className="font-medium">debby@gmail.com</p>
+                                <p className="font-medium">{user?.guarantor?.address}</p>
                             </div>
                             <div className="">
                                 <p className="uppercase text-xs">relationship</p>
-                                <p className="font-medium">Sister</p>
+                                <p className="font-medium">{user?.guarantor?.gender}</p>
                             </div>
                         </div>
                     </div>
