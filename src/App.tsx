@@ -1,11 +1,12 @@
-import Login from "./pages/Login";
-
+import {RouterProvider} from 'react-router-dom';
+import { StrictMode } from "react";
+import router from '@/routes';
 
 function App() {
     return ( 
-        <>
-            <Login />
-        </>
+       <StrictMode>
+            <RouterProvider router={router} />
+       </StrictMode>
      );
 }
 
